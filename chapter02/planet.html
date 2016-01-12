@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Planets</title>
+	<meta charset="utf-8">
+<script>
+window.onload = init;
+function init() { //通常需要在页面完全加载完之后再执行js代码,因为页面没加载完，DOM都没有，你执行个蛋？
+	var planet = document.getElementById("greenplanet");
+	planet.innerHTML = "Red Alert: hit by phaser fire!";
+}
+</script>
+</head>
+<body>
+	<h1>Green Planet</h1>
+	<p id="greenplanet">All is well</p>
+	<h1>Red Planet</h1>
+	<p id="redplanet">Nothing to report</p>
+	<h1>Blue Planet</h1>
+	<p id="blueplanet">All systems A-OK</p>
+</body>
+</html>
+
