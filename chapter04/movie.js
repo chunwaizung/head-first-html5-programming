@@ -11,7 +11,7 @@ function getTimeFromString(str) {
  	this.genre     = genre;
  	this.rating    = rating;
  	this.showtimes = showtimes
- 	this.getNextShowing: function(){
+ 	this.getNextShowing = function(){ //此处是等于号！！！不是冒号！！！声明一个对象才是冒号
  		var now = new Date().getTime();
  		for (var i = 0; i < this.showtimes.length; i++) {
  			var showtime = getTimeFromString(this.showtimes[i]);
