@@ -215,11 +215,11 @@ function Dog(name, breed, weight) { //可以想象成Objective－C里的 initWit
  //构造movie
 
  function Movie(title, genre, rating, showtimes) {
- 	this.title     = title;
- 	this.genre     = genre;
- 	this.rating    = rating;
- 	this.showtimes = showtimes
- 	this.getNextShowing: function(){
+ 	this.title          = title;
+ 	this.genre          = genre;
+ 	this.rating         = rating;
+ 	this.showtimes      = showtimes
+ 	this.getNextShowing = function(){
  		var now = new Date().getTime();
  		for (var i = 0; i < this.showtimes.length; i++) {
  			var showtime = getTimeFromString(this.showtimes[i]);
