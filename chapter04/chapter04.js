@@ -45,7 +45,7 @@ var result = f(1);
 function init() {
 	alert("you rule!");
 }
-window.onload = init;
+window.onload = init; //如果函数名后面使用了小括号，比如init()，就是说你希望调用函数init。如果只是使用名字而没有小括号，就会把这个函数值赋给onload属性。
 //直接把一个匿名的函数赋给window.onload属性
 window.onload = function() {
 	alert("you rule!");
@@ -231,10 +231,8 @@ function Dog(name, breed, weight) { //可以想象成Objective－C里的 initWit
  }
 
 var krakeMovie = new Movie("泰坦尼克号","爱情动作片",5,["3:00pm","5:00pm","8:00pm"]);
+//window对象相当于全局环境，所以alert()不加 window. 前缀也可以顺利解析
 alert(krakeMovie.getNextShowing());
-
-
-
 
 
 
