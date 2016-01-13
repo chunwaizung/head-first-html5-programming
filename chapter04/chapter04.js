@@ -100,7 +100,6 @@ function bark(dog){ //向函数传入一个对象
 		alert("yip");
 	}
 }
-
 bark(fido);
 
 //任何时刻都可以增加或删除属性
@@ -118,31 +117,121 @@ var movie1 = {
 	name:"Plan 9 from Outer Space",
 	type:"KongBuPian",
 	level:2,
-	showTime:["3pm","7pm","11pm"]
-}
+	showTime:["3:00pm","7:00pm","11:00pm"]
+};
 
 var movie2 = {
 	name:"Forbidden Planet",
 	type:"KeHuanPian",
 	level:5,
-	showTime:["5pm","9pm"]
+	showTime:["5:00pm","9:00pm"]
+};
+
+function getNextShowing(movie) {
+	var now = new Date().getTime();
+
+	for (var i = 0;i < movie.showTime.length; i++) {
+		var showtime = getTimeFromString(movie.showTime[i]);
+		if ((showtime - now) > 0) {
+			return "Next showing of " + movie.name + " is " + movie.showTime[i];
+		}
+	}
+	return null;
 }
 
+function getTimeFromString(str) {
+	var theTime = new Date();
+	var time = str.match(/(\d+)(?::(\d\d))?\s*(p?)/); //什么鬼？
+	theTime.setHours( parseInt(time[1]) + (time[3] ? 12 : 0) );
+	theTime.setMinutes( parseInt(time[2]) || 0 );
+	return theTime.getTime();
+}
 
+var nextShowing = getNextShowing(movie1);
+alert(nextShowing);
+nextShowing = getNextShowing(movie2);
+alert(nextShowing);
 
+var baby = {
+	name: "Fido",
+	weight: 40,
+	breed: "Mixed",
+	loves:["walks", "fetching balls"],
+	//对象也可以有函数：对象中的函数，叫做方法
+	bark : function(){
+	alert("WOOF!!!");
+  }
+};
 
+//调用对象中的方法
+baby.bark();
 
+var movie3 = {
+	name:"Planet 2333",
+	type:"KeHuanPian",
+	level:3,
+	showTime:["5:00am","6:30pm","9:00pm"],
+	getNextShowing:function() {
+	var now = new Date().getTime();
+//对象中的方法要使用this关键字访问对象自身的属性。相当于Objective－C的self
+	for (var i = 0;i < this.showTime.length; i++) {
+		var showtime = getTimeFromString(this.showTime[i]);
+		if ((showtime - now) > 0) {
+			return "Next showing of " + this.name + " is " + this.showTime[i];
+		}
+	}
+	return null;
+}
+};
 
+var newNextShowing = movie3.getNextShowing()
+alert(newNextShowing);
 
+//按照174行的方式构造一个movie对象，每一个movie对象都会有一大段重复的getNextShowing方法代码
+// 这里可以使用***构造函数***来解决
+//构造函数的名字，按照约定，首字母要大写，形参取我们希望的对象属性值
+function Dog(name, breed, weight) { //可以想象成Objective－C里的 initWithName:Breed:Weight
+	this.name   = name;
+	this.breed  = breed;
+	this.weight = weight;
+	this.bark   = function(){
+		if (this.weight > 25) {
+			alert(this.name + " says WOOF!");
+		} else {
+			alert(this.name + "says Yip!");
+		}
+	};
+}
 
+ //调用构造函数前要加上关键字new
+ var krake     = new Dog("Krake","Mixed",47);
+ var tiny      = new Dog("Tiny","Chawalla",8);
+ var clifford  = new Dog("Clifford","Bloodhound",65);
 
+ krake.bark();//一旦得到对象，就可以调用它们的bark方法让每个Dog叫
+ tiny.bark();
+ clifford.bark();
 
+ //构造movie
 
+ function Movie(title, genre, rating, showtimes) {
+ 	this.title     = title;
+ 	this.genre     = genre;
+ 	this.rating    = rating;
+ 	this.showtimes = showtimes
+ 	this.getNextShowing: function(){
+ 		var now = new Date().getTime();
+ 		for (var i = 0; i < this.showtimes.length; i++) {
+ 			var showtime = getTimeFromString(this.showtimes[i]);
+ 			if ((showtime - now) > 0) {
+ 				return "Next showing of " + this.title + " is " + this.showtimes[i];
+ 			}
+ 		}
+ 	};
+ }
 
-
-
-
-
+var krakeMovie = new Movie("泰坦尼克号","爱情动作片",5,["3:00pm","5:00pm","8:00pm"]);
+alert(krakeMovie.getNextShowing());
 
 
 
