@@ -54,7 +54,7 @@ head-first-html5-programming 课本练习
 	//然后可以使用这个变量来调用函数
 	var result = f(1);
 
-##---将函数作为值能够做什么----
+##将函数作为值能够做什么
 	function init() {
 		alert("you rule!");
 	}
@@ -63,7 +63,7 @@ head-first-html5-programming 课本练习
 	window.onload = function() {
 		alert("you rule!");
 	}
-##-----------------------------
+
 
 ##创建对象
 
