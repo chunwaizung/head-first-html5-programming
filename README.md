@@ -37,9 +37,9 @@ function init() { //通常需要在页面完全加载完之后再执行js代码,
 		}
 
 ##函数
-function addOne (num) {
-	return num + 1;
-}
+	function addOne (num) {
+		return num + 1;
+	}
 var plusOne = addOne; //把addOne赋到一个新变量plusOne
 var result = plasOne(1); //plasOne赋为一个函数，所以可以调用它并提供一个整型参数1
 ###函数可以没有名字
