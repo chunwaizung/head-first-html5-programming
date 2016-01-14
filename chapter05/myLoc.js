@@ -1,4 +1,5 @@
 window.onload = getMyLocation;
+
 function getMyLocation() {
 	if (navigator.geolocation) { //利用这个检查确保浏览器支持地理定位API，如果存在这个对象，说明浏览器支持这个API
 		//当geolocation确定了你的位置，就会调用传入的这个函数
@@ -14,6 +15,13 @@ function displayLocation(position) {//浏览器得到一个位置时就会调用
 
 	var div = document.getElementById("location");
 	div.innerHTML = "You are at Latitude: " + latitude + ", Longitude: " + longitude; 
+	div.innerHTML += "(with " + position.coords.accuracy + " meters accuracy)";//精度
+
+	var km = computeDistance(position.coords, ourCoords);//计算距离
+	var distance = document.getElementById("distance");
+	distance.innerHTML = "You are" + km + "km from the wickedlySmart HQ";
+
+	showMap(position.coords); //google maps API need a application key to get it work
 }
  
 function displayError(error) { //geolocation会在确定位置失败时向这个函数传入一个error对象。其中包含一个数值码，描述了未能确定浏览器位置的原因。
@@ -31,5 +39,53 @@ function displayError(error) { //geolocation会在确定位置失败时向这个
 
 	var div = document.getElementById("location");
 	div.innerHTML = errorMessage;
-
 }
+
+// --------------------- Ready Bake ------------------
+// 计算地球上两个坐标之间的距离
+// Uses the Spherical Law of Cosines to find the distance
+// between two lat/long points
+//
+function computeDistance(startCoords, destCoords) {
+	var startLatRads  = degreesToRadians(startCoords.latitude);
+	var startLongRads = degreesToRadians(startCoords.longitude);
+	var destLatRads   = degreesToRadians(destCoords.latitude);
+	var destLongRads  = degreesToRadians(destCoords.longitude);
+
+	var Radius = 6371; // radius of the Earth in km
+	var distance = Math.acos(Math.sin(startLatRads) * Math.sin(destLatRads) + 
+					Math.cos(startLatRads) * Math.cos(destLatRads) *
+					Math.cos(startLongRads - destLongRads)) * Radius;
+
+	return distance;
+}
+
+function degreesToRadians(degrees) {
+	radians = (degrees * Math.PI)/180;
+	return radians;
+}
+
+// ----------------------------------------------------
+
+//hfhtml5作者的位置
+var ourCoords = {
+	latitude: 47.624851,
+	longitude: -122.52099
+};
+
+//--------谷歌地图API-----------
+var map;
+function showMap(coords) {
+	var googleLatAndLong = new google.maps.LatLng(coords.latitude, coords.longitude); //使用传入的坐标构造一个Googlemap对象
+	var mapOptions = { //地图选项
+		zoom: 10, 
+		center: googleLatAndLong,
+		mapTypeId: google.maps.MapTypeId.ROADMAP //地图的类型
+	};
+	var mapDiv = document.getElementById("map"); //从DOM获取一个div，把地图绘制到这个div上
+	map = new google.maps.Map(mapDiv,mapOptions);//取一个元素和我们的选项，创建一个地图对象
+}
+
+
+
+
