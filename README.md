@@ -15,6 +15,7 @@ head-first-html5-programming 课本练习
 
 ##局部变量和全局变量
 函数体外声明的，是全局变量
+
 	var avator;
 	var levelThreshold = 1000;//全局变量,页面链接到其它脚本，它们也会看到这些全局变量
 	function getScore(points) {
