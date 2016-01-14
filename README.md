@@ -26,7 +26,7 @@ head-first-html5-programming 课本练习
 	return score;
 	}
 
-	var beanCounter = 10; //全部变量
+	var beanCounter = 10; //全局变量
 
 	function getNumberOfItems(ordertype) {
 		var beanCounter = 0;  //和全局变量同名，将在此函数体内覆盖全部变量
