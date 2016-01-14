@@ -8,33 +8,33 @@ function init() { //通常需要在页面完全加载完之后再执行js代码,
 }
 
 ##插入元素到DOM
-    var songItem = document.createElement("li");//新建元素，传入类型
+		var songItem = document.createElement("li");//新建元素，传入类型
 		songItem.innerHTML = songName;//设置新元素的文本，用innerHTML
 		var playlist = document.getElementById("playlist");//获取希望插入的元素
 		playlist.appendChild(songItem);//用appendChild()函数把新元素插入到希望插入的元素 
 
 ##局部变量和全局变量
 函数体外声明的，是全局变量
-var avator;
-var levelThreshold = 1000;//全局变量,页面链接到其它脚本，它们也会看到这些全局变量
+		var avator;
+		var levelThreshold = 1000;//全局变量,页面链接到其它脚本，它们也会看到这些全局变量
 
-function getScore(points) {
-	var score; //局部变量
-	for (var i = 0; i < levelThreshold; i++) {
-		//code here	
-	}
-	return score;
-}
+		function getScore(points) {
+			var score; //局部变量
+			for (var i = 0; i < levelThreshold; i++) {
+				//code here	
+			}
+		return score;
+		}
 
-var beanCounter = 10; //全部变量
+		var beanCounter = 10; //全部变量
 
-function getNumberOfItems(ordertype) {
-	var beanCounter = 0;  //和全局变量同名，将在此函数体内覆盖全部变量
-	if (ordertype == "order") {
-		//do some stuff with beanCounter...
-	}
-	return beanCounter;
-}
+		function getNumberOfItems(ordertype) {
+		var beanCounter = 0;  //和全局变量同名，将在此函数体内覆盖全部变量
+		if (ordertype == "order") {
+			//do some stuff with beanCounter...
+		}
+		return beanCounter;
+		}
 
 ##函数
 function addOne (num) {
