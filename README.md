@@ -139,7 +139,7 @@ head-first-html5-programming 课本练习
   		}
 	};
 
-//调用对象中的方法
+	//调用对象中的方法
 	baby.bark();
 
 	var movie3 = {
