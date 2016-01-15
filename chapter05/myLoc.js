@@ -1,19 +1,26 @@
-//*全局变量
-//*
-//*hfhtml5作者的位置
-var ourCoords = {
+//*************************全局变量*************************
+
+var ourCoords = { //*hfhtml5作者的位置
 	latitude: 47.624851,
 	longitude: -122.52099
 };
-//创建谷歌地图的对象
-var map; 
+
+var map; //创建谷歌地图的对象
+
+var watchId = null; //通过这个id来clear追踪状态
+
+//**********************全局变量结束*************************
 
 window.onload = getMyLocation;
 
 function getMyLocation() {
 	if (navigator.geolocation) { //利用这个检查确保浏览器支持地理定位API，如果存在这个对象，说明浏览器支持这个API
 		//当geolocation确定了你的位置，就会调用传入的这个函数
-		navigator.geolocation.getCurrentPosition(displayLocation, displayError); //displayLocation函数就是将要操纵位置的处理程序
+		//navigator.geolocation.getCurrentPosition(displayLocation, displayError);//追踪位置时需要注释这一行，添加下面4行 //displayLocation函数就是将要操纵位置的处理程序
+		var watchButton = document.getElementById("watch");
+		watchButton.onclick = watchLocation;
+		var clearWatchButton = document.getElementById("clearwatch");
+		clearWatchButton.onclick = clearwatch;	
 	} else {
 		alert("Oops, no geolocation support");
 	}
@@ -76,10 +83,6 @@ function degreesToRadians(degrees) {
 	return radians;
 }
 
-// ----------------------------------------------------
-
-
-
 //---------------------谷歌地图API----------------------
 function showMap(coords) {
 	var googleLatAndLong = new google.maps.LatLng(coords.latitude, coords.longitude); //使用传入的坐标构造一个Googlemap对象
@@ -92,6 +95,16 @@ function showMap(coords) {
 	map = new google.maps.Map(mapDiv,mapOptions);//取一个元素和我们的选项，创建一个地图对象
 }
 
+//----------------------追踪位置------------------------
+function watchLocation(){
+	watchId = navigator.geolocation.watchPosition(displayLocation, displayError);
+	alert("正在追踪位置");
+}
 
-
-
+function clearwatch() {
+	if (watchId) {
+		navigator.geolocation.clearWatch(watchId);
+		watchId = null;
+		alert("停止追踪位置");
+	}
+}
