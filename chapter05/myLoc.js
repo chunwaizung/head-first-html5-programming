@@ -1,3 +1,13 @@
+//*全局变量
+//*
+//*hfhtml5作者的位置
+var ourCoords = {
+	latitude: 47.624851,
+	longitude: -122.52099
+};
+//创建谷歌地图的对象
+var map; 
+
 window.onload = getMyLocation;
 
 function getMyLocation() {
@@ -20,8 +30,9 @@ function displayLocation(position) {//浏览器得到一个位置时就会调用
 	var km = computeDistance(position.coords, ourCoords);//计算距离
 	var distance = document.getElementById("distance");
 	distance.innerHTML = "You are" + km + "km from the wickedlySmart HQ";
-
+	if(map = null){//为“无处可逃”添加的代码，确保只添加一次地图对象
 	showMap(position.coords); //google maps API need a application key to get it work
+	}
 }
  
 function displayError(error) { //geolocation会在确定位置失败时向这个函数传入一个error对象。其中包含一个数值码，描述了未能确定浏览器位置的原因。
@@ -67,14 +78,9 @@ function degreesToRadians(degrees) {
 
 // ----------------------------------------------------
 
-//hfhtml5作者的位置
-var ourCoords = {
-	latitude: 47.624851,
-	longitude: -122.52099
-};
 
-//--------谷歌地图API-----------
-var map;
+
+//---------------------谷歌地图API----------------------
 function showMap(coords) {
 	var googleLatAndLong = new google.maps.LatLng(coords.latitude, coords.longitude); //使用传入的坐标构造一个Googlemap对象
 	var mapOptions = { //地图选项
