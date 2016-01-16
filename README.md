@@ -208,3 +208,129 @@ head-first-html5-programming 课本练习
 	var krakeMovie = new Movie("泰坦尼克号","爱情动作片",5,["3:00pm","5:00pm","8:00pm"]);
 	//window对象相当于全局环境，所以alert()不加 window. 前缀也可以顺利解析
 	alert(krakeMovie.getNextShowing());
+
+##第五章-爸爸去哪儿（地理位置API）
+###Geolocation.getCurrentPosition()函数
+	function getMyLocation() {
+		if (navigator.geolocation) { //利用这个检查确保浏览器支持地理定位API，如果存在这个对象，说明浏览器支持这个API
+		//当geolocation确定了你的位置，就会调用传入的这个函数
+		navigator.geolocation.getCurrentPosition(displayLocation, displayError,options);//追踪位置时需要注释这一行，添加下面4行 //displayLocation函数就是将要操纵位置的处理程序
+		} else {
+			alert("Oops, no geolocation support");
+		}
+	}
+	
+###成功处理函数success handler
+
+	function displayLocation(position) {//浏览器得到一个位置时就会调用这个函数。getCurrentPosition会传递一个位置（position对象）到这个函数，包含经度和纬度
+		var latitude  = position.coords.latitude;
+		var longitude = position.coords.longitude;
+	
+		var div = document.getElementById("location");
+		div.innerHTML = "You are at Latitude: " + latitude + ", Longitude: " + longitude; 
+		div.innerHTML += "(with " + position.coords.accuracy + " meters accuracy)";//精度
+		div.innerHTML += "(found in " + options.timeout + " milliseconds)";
+	
+		var km = computeDistance(position.coords, ourCoords);//计算距离
+		var distance = document.getElementById("distance");
+		distance.innerHTML = "You are" + km + "km from the wickedlySmart HQ";
+	}
+	
+###失败处理函数failed handler
+
+	function displayError(error) { //geolocation会在确定位置失败时向这个函数传入一个error对象。其中包含一个数值码，描述了未能确定浏览器位置的原因。
+		var errorType = {
+			0: "Unknown error",
+			1: "Permission denied by user",
+			2: "Position is not available",
+			3: "Request timed out"
+		};
+		var errorMessage = errorType[error.code];//error对象有一个code属性，其中包含一个0-3的数。根据code属性的不同，把一个错误消息串赋给一个新变量
+	
+		if (error.code == 0 || error.code == 2) {
+			errorMessage = errorMessage + " " + error.message;
+		}
+	
+		var div = document.getElementById("location");
+		div.innerHTML = errorMessage;
+	
+		options.timeout += 100;
+		navigator.geolocation.getCurrentPosition(displayLocation,displayError.options);
+		div.innerHTML += "...checking again with timeout= " + options.timeout;
+	}
+	
+###getCurrentPosition的第三个参数：
+	var positionOptions = {
+		enableHighAccurary: false, //是否开启高精度
+		timeout: Infinity, //超时时长
+		maximumAge:0 //缓存时间，例如，设置为60000 （60s），60秒内第二次求位置会返回原来的值，不会重新求
+	}
+
+###追踪位置
+	var watchId = null; //通过这个id来clear追踪状态
+	
+	function watchLocation(){
+		watchId = navigator.geolocation.watchPosition(displayLocation, displayError);
+		alert("正在追踪位置");
+	}
+
+	function clearwatch() {
+		if (watchId) {
+			navigator.geolocation.clearWatch(watchId);
+			watchId = null;
+			alert("停止追踪位置");
+		}
+	}
+
+##第六章
+
+###如何从javascript做出请求
+
+	var url = "http://someserver.com/data.json"; //创建一个目标url,告诉浏览器要到哪里找我们想要的数据
+	var request = new XMLHttpRequest(); //创建一个XMLHttpRequest请求对象
+	request.open("GET",url)//这个request对象将使用GET方式获取url的请求。open用一个URL建立一个请求，并告诉这个请求对象要使用哪种请求，以便XMLHttpRequest验证连接。
+	request.onload = function() { //数据到达时，调用这个处理函数
+		if (request.status == 200) { //http响应码200表示请求没有错误
+			alert(request.responseText);//HTTP GET获取到数据可以在request对象的responseText属性中找到
+		}
+	};
+	request.send(null); //告诉请求对象去获取数据。send()会把请求发送到服务器，如果不打算发送任何数据，就传入null。
+
+###JSON
+####JSON.stringify()把数据转化为json格式
+	var plan9Movie = new Movie("Plan 9 from Outer Space","Cult Classic",2,["3:00pm","5:00pm","11:00pm"]); //创建一个对象
+	var jsonString = JSON.stringify(plan9Movie);//转化为json格式的串
+	alert(jsonString);
+####JSON.parse()把json数据转化为javascript对象
+	var jsonObject = JSON.parse(jsonString);//json串转化为对象
+	alert("JSON movie is " + jsonObject.title);
+	
+###tips:
+[在Mac上启动本地服务器](http://coolestguidesontheplanet.com/get-apache-mysql-php-and-phpmyadmin-working-on-osx-10-11-el-capitan/)
+
+
+	window.onload = function() {
+		//var url = "http://gumball.wickedlysmart.com";
+		var url = "http://localhost/sales.json"; //测试时需要在浏览器输入http://localhost/mightygumball.html,直接打开mightygumball.html将无法获取json数据
+	 	var request = new XMLHttpRequest();
+	 	request.open("GET", url);
+	 	request.onload = function() {
+	 		if (request.status == 200) {
+	 			updateSales(request.responseText);
+	 		}
+	 	};
+	 	request.send(null);
+	}
+	
+	function updateSales(responseText) {
+	 	var salesDiv = document.getElementById("sales");
+	 	var sales = JSON.parse(responseText); //转化为javascript对象
+	 	for (var i = 0; i < sales.length; i++) { //迭代处理每一个数组元素
+	 		var sale = sales[i];
+	 		var div = document.createElement("div"); //对每个元素，创建一个div，设置class属性以便css调整样式
+	 		div.setAttribute("class","saleItem");
+	 		div.innerHTML =  sale.name + " sold " + sale.sales + " gumball";
+	 		salesDiv.appendChild(div);
+	 	}
+	}
+	
