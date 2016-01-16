@@ -1,5 +1,6 @@
 # head-first-html5-programming
-head-first-html5-programming 课本练习
+
+（龟速更新中）
 
 	window.onload = init;
 	function init() { //通常需要在页面完全加载完之后再执行js代码,因为页面没加载完，DOM都没有，你执行个蛋？
