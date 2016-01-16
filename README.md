@@ -14,8 +14,8 @@ head-first-html5-programming 课本练习
 	playlist.appendChild(songItem);//用appendChild()函数把新元素插入到希望插入的元素 
 
 ##局部变量和全局变量
-函数体外声明的，是全局变量
 
+	函数体外声明的，是全局变量
 	var avator;
 	var levelThreshold = 1000;//全局变量,页面链接到其它脚本，它们也会看到这些全局变量
 	function getScore(points) {
@@ -54,7 +54,7 @@ head-first-html5-programming 课本练习
 	//然后可以使用这个变量来调用函数
 	var result = f(1);
 
-##将函数作为值能够做什么
+###将函数作为值能够做什么
 	function init() {
 		alert("you rule!");
 	}
@@ -306,7 +306,7 @@ head-first-html5-programming 课本练习
 	alert("JSON movie is " + jsonObject.title);
 	
 ###tips:
-[在Mac上启动本地服务器](http://coolestguidesontheplanet.com/get-apache-mysql-php-and-phpmyadmin-working-on-osx-10-11-el-capitan/)
+如何[在Mac上启动localhost本地服务器](http://coolestguidesontheplanet.com/get-apache-mysql-php-and-phpmyadmin-working-on-osx-10-11-el-capitan/)
 
 
 	window.onload = function() {
@@ -334,3 +334,5 @@ head-first-html5-programming 课本练习
 	 	}
 	}
 	
+###浏览器安全策略
+	浏览器不允许你对原先提供页面的域以外的其他域发出XMLHttpRequests请求
