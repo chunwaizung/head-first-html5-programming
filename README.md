@@ -362,7 +362,8 @@ function updateSales(responseText) {
 	XMLHttpRequest向hehehe.com请求数据-->浏览器看的这个请求指向与页面不同的域，就会停下，请求被拒绝-->blablabla.com的服务区根本没有看到请求，在它看到请求之前，浏览器的安全策略已经中止了这个请求
 	（简单地说，你丫百度的跑来我大谷歌请求数据？滚！！！）
 	
-###JSONP
+###JSONP-一种使用`<script>`获取数据的方法
+
 >*浏览器不允许你对原先提供页面的域以外的其他域发出XMLHttpRequests请求*
 
 >*如果从某个域提供页面，安全策略要求不能从另一个域获取数据*
@@ -403,3 +404,72 @@ function updateSales(responseText) {
 	 		salesDiv.appendChild(div);
 	 	}
 	}
+####安全问题
+如果向一个恶意web服务发出一个JSONP请求，响应中可能包含你不想要的代码，而且浏览器会执行这些恶意代码。所以在链接前需要确保信任这个服务。
+
+###定时器
+####setInterval(handleRefresh,timeInterval)方法
+```
+setInterval(imfire, 3000);//每隔3秒钟，执行一次imfire函数
+
+function imfire(){
+	alert("I'm fire!");
+}
+```
+
+###动态插入`<script>`元素
+`setInterval(handle, interval)`
+
+`getElementsByTagName(tag)`
+
+`replaceChild(new,old)`
+
+`setAttribute(attributeName, value)`
+
+载入脚本，调用`setInterval()`
+
+```
+window.onload = function() {
+	var url = "http://gumball.wickedlysmart.com／gumball/gumball.com";
+	setInterval(refresh, 3000); //setInterval()返回一个id标识这个定时器，把这个id保存在一个变量里，以后可以通过传递id到clearInterval方法停止它
+}
+```
+`setInterval()`调用`refresh()`
+
+如果多次请求，可以在JSONP请求URL的末尾使用一个随机数（这是是random=blablabla），使浏览器不会缓存这个相应
+
+```
+function refresh() {
+	var url = "http://gumball.wickedlysmart.com／gumball/gumball.com/?callback=updateSales" + "&lastreporttime" + lastReportTime + "&random=" + (new Date()).getTime(); //url放在这里
+	var newScriptElement = document.createElement("script");//新建一个script元素
+	newScriptElement.setAttribute("src",url);//设定新script的src和id
+	newScriptElement.setAttribute("id","jsonp");
+
+	var oldScriptElement = document.getElementById("jsonp");//看看有没有这个元素
+	var head = document.getElementsByTagName("head")[0]; //返回与给定标记名匹配到元素数组
+	if (!oldScriptElement) {//如果没有
+		head.appendChild(newScriptElement); //增加到head
+	} else {//如果已经存在
+		head.replaceChild(newScriptElement, oldScriptElement); //替换掉 -->replaceChild(new, old)
+		//如果只是用新的url替换src属性，浏览器不会把它当做一个新元素，所以不会发出请求，要强制浏览器作出请求，必须创建这个全新的script元素。替换掉整个<script>元素。这种技术称为“脚本插入”
+	}
+}
+```
+脚本插入后调用url里传入的回调函数`updateSales`
+
+```
+function updateSales(sales) { //返回的新数据不再是一个json串，而是一个对象。
+ 	var salesDiv = document.getElementById("sales");
+
+ 	for (var i = 0; i < sales.length; i++) { //迭代处理每一个数组元素
+ 		var sale = sales[i];
+ 		var div = document.createElement("div"); //对每个元素，创建一个div，设置class属性以便css调整样式
+ 		div.setAttribute("class","saleItem");
+ 		div.innerHTML =  sale.name + " sold " + sale.sales + " gumball";
+ 		salesDiv.appendChild(div);
+ 	}
+ 	if (sales.length > 0) {
+ 		lastReportTime = sales[sales.length -1].time;
+ 	}
+}
+```
