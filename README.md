@@ -351,9 +351,6 @@ function updateSales(responseText) {
 ```
 	
 ##浏览器安全策略
->*浏览器不允许你对原先提供页面的域以外的其他域发出XMLHttpRequests请求*
-
->*如果从某个域提供页面，安全策略要求不能从另一个域获取数据*
 	
 ###javascript 代码可以接受的行为
 	用户对一个页面（blablabla.com）作出请求
@@ -362,5 +359,46 @@ function updateSales(responseText) {
 	浏览器对blablabla.com上的一个页面作出请求
 	代码希望从一个来源得到数据，也就是hehehe.com，嗯，这是不！！行！！的！！
 	XMLHttpRequest向hehehe.com请求数据-->浏览器看的这个请求指向与页面不同的域，就会停下，请求被拒绝-->blablabla.com的服务区根本没有看到请求，在它看到请求之前，浏览器的安全策略已经中止了这个请求
-	简单地说，你丫百度的跑来我大谷歌请求数据？滚！！！
+	（简单地说，你丫百度的跑来我大谷歌请求数据？滚！！！）
 	
+###JSONP
+>*浏览器不允许你对原先提供页面的域以外的其他域发出XMLHttpRequests请求*
+
+>*如果从某个域提供页面，安全策略要求不能从另一个域获取数据*
+
+当我们需要从其他域获取数据时，可以这样：
+
+`mightygumball.html`
+
+	<!doctype html>
+	<html lang="en">
+	<head>
+		<title>Mighty Gumball</title>
+		<meta charset="utf-8">
+		<script src="mightygumball.js"></script>
+		<link rel="stylesheet" href="mightygumball.css"> 
+	</head>
+	
+	<body>
+		<h1>Mighty Gumball Sales</h1>
+		<div id="sales">
+		</div>
+		<script src="http://gumball.wickedlysmart.com／gumball/gumball.com/?callback=updateSales"></script><!--链接外部javascript-->
+	</body>
+	</html>
+	
+解析到数据后回调updateSales函数进行处理(`?callback=updateSales`)
+
+`mightygumball.js`
+
+	function updateSales(sales) { //返回的新数据不再是一个json串，而是一个对象。
+	 	var salesDiv = document.getElementById("sales");
+	
+	 	for (var i = 0; i < sales.length; i++) { //迭代处理每一个数组元素
+	 		var sale = sales[i];
+	 		var div = document.createElement("div"); //对每个元素，创建一个div，设置class属性以便css调整样式
+	 		div.setAttribute("class","saleItem");
+	 		div.innerHTML =  sale.name + " sold " + sale.sales + " gumball";
+	 		salesDiv.appendChild(div);
+	 	}
+	}
