@@ -294,7 +294,8 @@ function clearwatch() {
 ```
 ##第六章
 
-###如何从javascript做出请求
+###如何从javascript创建请求
+####XMLHttpRequest
 
 ```
 var url = "http://someserver.com/data.json"; //创建一个目标url,告诉浏览器要到哪里找我们想要的数据
