@@ -6,6 +6,11 @@ function init () {
 }
 
 function checkGuess () {
+	var lastNewAnswerArray = document.getElementsByClassName("newAnswer");
+	if (lastNewAnswerArray.length) {
+		var lastNewAnswer = lastNewAnswerArray[0];
+		lastNewAnswer.setAttribute("class","oldAnswer");
+	}
 
 	var guessInput = document.getElementById("guess");
 	var guess = guessInput.value;
@@ -19,6 +24,7 @@ function checkGuess () {
 		answer = "Sorry, I was thinking of " + answers[index];
 	}
 	var answerBoard = document.createElement("p");
+	answerBoard.setAttribute("class","newAnswer");
 	answerBoard.innerHTML = answer;
 	var form = document.getElementById("form");
 	form.appendChild(answerBoard);
