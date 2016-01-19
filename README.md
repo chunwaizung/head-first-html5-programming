@@ -168,9 +168,40 @@ alert(description.childNodes[0].nodeValue);// = descriptionText
 ```
 
 `childNodes[0]`通常用`firstChild`代替
+
+#最佳实践
 ##伪协议
-<br>
-<span style="font-size:70px; background:#777; border-radius:5px; color:white; margin-left:1em;">晚点再加...</span>
+
+- 尽量不使用`javascript:`伪协议
+- 不要这样写：`href="#"`
+
+###`addLoadEvent()`
+需要在window.onload中执行多个函数时，用一个统一的函数处理
+
+```
+function addLoadEvent(func) {
+	var oldload = window.onload;
+	if (typeof window.onload != 'function') {
+		window.onload = func;
+	} else {
+		window.onload = function() {
+			oldload();
+			func();
+		}
+	}
+}
+
+addLoadEvent(functionA);
+addLoadEvent(functionB);
+```
+
+
+##脚本的插入位置
+脚本在标记中的位置对页面的初次加载时间有很大影响。一般我们把脚本放在文档的`<head>`区域。这种方法的一个问题是：位于`<head>`块中的脚本会导致浏览器无法并行加载其他文件，如其他脚本或图像。根据http规范，浏览器每次从同一个域名中最多只能同时下载两个文件。而在下载脚本期间，浏览器不会下载其他任何文件。即使是来自不同域名的也不会下载。所有其他资源都要等脚本加载完才会下载。把所有的`<script>`标签都放到文档的末尾，`</body>`标记之前，就可以让页面变得更快。
+
+###document.write()
+<img src="image1.png">
+
 ##window.onload
 
 ```
