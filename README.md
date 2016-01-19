@@ -1,4 +1,4 @@
-# head-first-html5-programming
+# javascript DOM编程艺术
 
 （龟速更新中）
 ##数据类型
@@ -153,7 +153,9 @@ shopping.setAttribute("title","a list of goods"); //shopping.title = "a list of 
 ```
 element.childNodes
 ```
-
+##nodeName
+<br>
+<span style="font-size:70px; background:#777; border-radius:5px; color:white; margin-left:1em;">晚点再加...</span>
 ##nodeType
 <br>
 <span style="font-size:70px; background:#777; border-radius:5px; color:white; margin-left:1em;">晚点再加...</span>
@@ -200,7 +202,31 @@ addLoadEvent(functionB);
 脚本在标记中的位置对页面的初次加载时间有很大影响。一般我们把脚本放在文档的`<head>`区域。这种方法的一个问题是：位于`<head>`块中的脚本会导致浏览器无法并行加载其他文件，如其他脚本或图像。根据http规范，浏览器每次从同一个域名中最多只能同时下载两个文件。而在下载脚本期间，浏览器不会下载其他任何文件。即使是来自不同域名的也不会下载。所有其他资源都要等脚本加载完才会下载。把所有的`<script>`标签都放到文档的末尾，`</body>`标记之前，就可以让页面变得更快。
 
 ###document.write()
+
 <img src="image1.png">
+
+###innerHTML
+一旦使用了innerHTML，原先的内容会全部被替换掉
+
+###createElement()和div.appendChild()
+
+```
+var div = document.getElementById("testdiv");
+var newP = document.createElement("p"); //创建一个p标签元素
+newP.innerHTML = "nodeName: " + newP.nodeName + " nodeType: " + newP.nodeType;
+div.appendChild(newP); //div增加子节点
+```
+---
+---
+---
+---
+---
+---
+---
+---
+---
+
+#head-first-html5
 
 ##window.onload
 
