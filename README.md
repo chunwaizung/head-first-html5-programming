@@ -208,13 +208,55 @@ addLoadEvent(functionB);
 ###innerHTML
 一旦使用了innerHTML，原先的内容会全部被替换掉
 
-###createElement()和div.appendChild()
+###createElement(newElement)和appendChild(childName)
 
 ```
 var div = document.getElementById("testdiv");
 var newP = document.createElement("p"); //创建一个p标签元素
 newP.innerHTML = "nodeName: " + newP.nodeName + " nodeType: " + newP.nodeType;
 div.appendChild(newP); //div增加子节点
+```
+### 使用createTextNode(text)增加文本内容
+```
+window.onload = function() {
+	var div = document.getElementById("testdiv");
+	var newP = document.createElement("p");
+	var txt = document.createTextNode("nodeName: " + newP.nodeName + " nodeType: " + newP.nodeType);
+	div.appendChild(newP);
+	newP.appendChild(txt);
+}
+```
+
+###insertBefore()
+调用此方法时，你必须告诉它三件事：
+
+- 新元素：你想插入的元素
+- 目标元素：你想把这个新元素插入到哪个元素
+- 父元素：目标元素的父元素
+
+语法：`parentElement.insertBefore(newElement,targetElement);` <br>
+我们不必搞清楚父元素到底是哪个，因为`targetElement`元素的`parentNode`属性就是它。
+
+```
+function demoForInsertBefore() {
+	var gallery = document.getElementById("imageGallery");
+	var description = document.getElementById("description");
+	gallery.parentNode.insertBefore(gallery, description);//在description前面插入gallery
+}
+```
+
+###insertAfter()
+dom没有提供默认的insertAfter()方法，我们可以通过下面的函数实现这一功能
+
+```
+function insertAfter(newElem, target) {
+	var parent = target.parentNode;
+	if (parent.lastChild == target) {
+		parent.appendChild(newElem);
+	} else {
+		parent.insertBefore(newElem,target.nextsibing);
+	}
+}
 ```
 ---
 ---
