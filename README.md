@@ -258,14 +258,23 @@ function insertAfter(newElem, target) {
 	}
 }
 ```
----
----
----
----
----
----
----
----
+
+###new XMLHttpRequest()
+
+`open()`方法有3个参数，指定请求类型，将要访问的文件，以及是否通过异步方式发送和处理
+
+```
+var request = new XMLHttpRequest();
+request.open("GET","example.txt",true);
+```
+readyState有5个值<br>
+
+- 0：未初始化
+- 1：正在加载
+- 2：加载完毕
+- 3：正在交互
+- 4：完成
+
 ---
 
 #head-first-html5
